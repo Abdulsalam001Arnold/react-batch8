@@ -1,7 +1,7 @@
 
 import Header from "../components/Header"
-import {usestate, useEffect} from "react"
-
+import {useState, useEffect} from "react"
+import { ToastContainer, toast } from "react-toastify"
 
 
 export default function Home() {
@@ -9,13 +9,18 @@ export default function Home() {
 
   useEffect(() => {
      const fetchData = async () => {
-      const response = await fetch("https://dragonball-api.com/api/characters")
-
-      const data = await response.json()
-
-      const characterDetails = data.items
-
-      setCharacters(characterDetails)
+      try {
+        const response = await fetch("https://dragonball-api.com/api/characters")
+  
+        const data = await response.json()
+  
+        const characterDetails = data.items
+  
+        setCharacters(characterDetails)
+        toast.success("Data fetched successfully!")
+      } catch (err) {
+        toast.error(err)
+      }
      }
 
      fetchData()
@@ -24,6 +29,7 @@ export default function Home() {
 
     return(
         <main>
+          <ToastContainer/>
           <Header/>
 
           <section>

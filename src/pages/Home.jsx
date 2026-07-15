@@ -2,10 +2,13 @@
 import Header from "../components/Header"
 import {useState, useEffect} from "react"
 import { ToastContainer, toast } from "react-toastify"
+import { useUserStore } from "../store/userStore"
 
 
 export default function Home() {
   const [characters, setCharacters] = useState([])
+
+  const {user} = useUserStore()
 
   useEffect(() => {
      const fetchData = async () => {
@@ -18,6 +21,7 @@ export default function Home() {
   
         setCharacters(characterDetails)
         toast.success("Data fetched successfully!")
+         console.log(user?.username)
       } catch (err) {
         toast.error(err)
       }
@@ -31,6 +35,10 @@ export default function Home() {
         <main>
           <ToastContainer/>
           <Header/>
+
+          <h1 className="text-[40px] leading-2">
+            Welcome {user ? user?.email : "Guest"}
+          </h1>
 
           <section>
             {characters.map((character, index) => (

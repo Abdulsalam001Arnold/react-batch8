@@ -2,8 +2,12 @@ import { ToastContainer, toast } from "react-toastify"
 import { axiosInstance } from "../api/axios"
 import { useState } from "react"
 import Loader from "../components/Loader"
-
+import { useUserStore } from "../store/userStore"
+import { useNavigate } from "react-router-dom"
 export default function Signup() {
+
+  const { signup } = useUserStore()
+  const navigate = useNavigate()
     const [formData, setFormData] = useState({
         username: "",
         email: "",
@@ -26,11 +30,11 @@ export default function Signup() {
         event.preventDefault()
         setLoading(true)
         try{
-         const response = await axiosInstance.post("/api/signup", formData)
-        message = response.data.message
-         if(response.data) {
-          toast.success(response.data.message)
-         }
+         await signup(formData)
+
+         toast.success("Signup sucessful")
+
+         navigate("/")
         }catch(err) {
         console.error(err)
         toast.error(err)
